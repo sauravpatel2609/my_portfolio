@@ -34,7 +34,14 @@ function ContactWithoutCaptcha() {
 
     const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
     const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const options = { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY };
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceID || !templateID || !publicKey) {
+      toast.error('Email service is not configured. Please contact the administrator.');
+      return;
+    }
+
+    const options = { publicKey };
 
     try {
       const res = await emailjs.send(serviceID, templateID, userInput, options);
